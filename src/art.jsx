@@ -1,5 +1,5 @@
 import { useId } from 'react'
-import { fishImage } from './fishImages'
+import { fishImage, charImage, rodImage, sushiImage, plateImage } from './assets'
 
 /* いろの あかるさを かえる */
 function shade(hex, amt) {
@@ -593,6 +593,20 @@ export function FishArt({ fish, size = 80, flip = false }) {
 /* ============ キャラクター ============ */
 
 export function CharArt({ char, size = 120, pose = 'idle', rod = false }) {
+  const cimg = charImage(char.id)
+  if (cimg) {
+    return (
+      <img
+        src={cimg}
+        alt={char.name}
+        width={size}
+        height={(size * 560) / 440}
+        draggable="false"
+        className={`char-img ${pose === 'pull' ? 'pull' : ''}`}
+        style={{ display: 'block', objectFit: 'contain', pointerEvents: 'none' }}
+      />
+    )
+  }
   const c = char.color
   const d = char.color2
   const isCat = char.body === 'cat'
@@ -688,6 +702,19 @@ export function CharArt({ char, size = 120, pose = 'idle', rod = false }) {
 
 export function SushiArt({ fish, size = 90 }) {
   const raw = useId()
+  const simg = sushiImage(fish.id)
+  if (simg) {
+    return (
+      <img
+        src={simg}
+        alt={`${fish.name}のすし`}
+        width={size}
+        height={(size * 320) / 420}
+        draggable="false"
+        style={{ display: 'block', objectFit: 'contain', pointerEvents: 'none' }}
+      />
+    )
+  }
   const uid = raw.replace(/:/g, '')
   const c = fish.color
   const d = fish.color2
@@ -749,7 +776,20 @@ export function SushiArt({ fish, size = 90 }) {
 
 /* ============ おさら（かいてんずし）============ */
 
-export function PlateArt({ color = '#e8eef2', size = 92 }) {
+export function PlateArt({ color = '#e8eef2', size = 92, rarity = 1 }) {
+  const pimg = plateImage(rarity)
+  if (pimg) {
+    return (
+      <img
+        src={pimg}
+        alt=""
+        width={size}
+        height={(size * 120) / 340}
+        draggable="false"
+        style={{ display: 'block', objectFit: 'contain', pointerEvents: 'none' }}
+      />
+    )
+  }
   return (
     <svg viewBox="0 0 120 34" width={size} height={(size * 34) / 120}>
       <ellipse cx="60" cy="20" rx="56" ry="13" fill={shade(color, -0.22)} />
@@ -757,5 +797,23 @@ export function PlateArt({ color = '#e8eef2', size = 92 }) {
       <ellipse cx="60" cy="15" rx="44" ry="9.5" fill={shade(color, 0.35)} />
       <ellipse cx="60" cy="14" rx="30" ry="6" fill={shade(color, 0.15)} opacity="0.5" />
     </svg>
+  )
+}
+
+/* ============ つりざお（がぞうが あれば） ============ */
+
+export function RodArt({ rodId, width = 190 }) {
+  const img = rodImage(rodId)
+  if (!img) return null
+  return (
+    <img
+      src={img}
+      alt=""
+      className="rod-img"
+      width={width}
+      height={(width * 150) / 600}
+      draggable="false"
+      style={{ pointerEvents: 'none' }}
+    />
   )
 }

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { AREAS, BAITS, CHARACTERS, FISH, RARITY_COLOR, RARITY_LABEL, RODS, fishById } from './data'
-import { CharArt, FishArt } from './art'
+import { CharArt, FishArt, RodArt } from './art'
 import Sea from './Sea'
 import Kaiten from './Kaiten'
+import { rodImage, shopImage } from './assets'
 import { sfx, setSound } from './sound'
 
 const SAVE_KEY = 'tsuri-tsuri-save-v1'
@@ -322,6 +323,7 @@ function Fishing({ save, setSave, char, area, onBack }) {
   const lastTap = useRef(0)
 
   const rod = RODS.find((r) => r.id === save.rodId) || RODS[0]
+  const hasRodImg = !!rodImage(rod.id)
   const bait = BAITS.find((b) => b.id === save.baitId) || BAITS[0]
   const baitCount = save.baits[bait.id] ?? (bait.id === 'none' ? Infinity : 0)
 
@@ -529,7 +531,7 @@ function Fishing({ save, setSave, char, area, onBack }) {
   const floatY = phase === PHASE.CAST ? -50 : phase === PHASE.HIT ? 14 : 0
 
   return (
-    <div className={`screen fishing ${shake ? 'shake' : ''}`}>
+    <div className={`screen fishing ${shake ? 'shake' : ''} ${hasRodImg ? 'has-rod-img' : ''}`}>
       <Sea area={area}>
         <div className="fishing-layer">
           <div className="dock">
@@ -538,8 +540,9 @@ function Fishing({ save, setSave, char, area, onBack }) {
             <div className="piling p2" />
           </div>
 
-          <div className="angler">
-            <CharArt char={char} size={130} pose={phase === PHASE.REEL ? 'pull' : 'idle'} rod />
+          <div className={`angler ${phase === PHASE.REEL ? 'pulling' : ''}`}>
+            <CharArt char={char} size={130} pose={phase === PHASE.REEL ? 'pull' : 'idle'} rod={!hasRodImg} />
+            {hasRodImg && <RodArt rodId={rod.id} width={190} />}
           </div>
 
           <svg className="line-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
@@ -703,7 +706,7 @@ function Shop({ save, setSave, onBack }) {
             const owned = i <= rodIdx
             return (
               <div key={r.id} className={`shop-item ${owned ? 'owned' : ''}`}>
-                <div className="item-icon">🎣</div>
+                <div className="item-icon">{rodImage(r.id) ? <img src={rodImage(r.id)} alt="" width="104" /> : '🎣'}</div>
                 <div className="item-info">
                   <b>{r.label}</b>
                   <small>{r.desc}</small>

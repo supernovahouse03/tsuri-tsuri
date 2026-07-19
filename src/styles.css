@@ -708,6 +708,13 @@ body {
   height: calc(4% + 130px);
   overflow: visible;
 }
+/* さおが がぞう の とき: さきっぽ = (94+190*cos40, 96-190*sin40) ≒ (240, -26) */
+.has-rod-img .line-svg {
+  left: calc(4% + 240px);
+  top: calc(34% - 172px);
+  width: calc(52% - 240px);
+  height: calc(4% + 172px);
+}
 .float {
   position: absolute;
   left: 56%;
@@ -1011,6 +1018,10 @@ body {
 }
 .item-icon {
   font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
 }
 .item-info {
   flex: 1;
@@ -1127,8 +1138,8 @@ body {
 }
 .oshinagaki {
   position: absolute;
-  left: 22%;
-  top: 60px;
+  left: 21%;
+  top: 58px;
   display: flex;
   gap: 5px;
 }
@@ -1148,6 +1159,7 @@ body {
 }
 .noren {
   position: absolute;
+  z-index: 3;
   top: 0;
   left: 0;
   right: 0;
@@ -1202,8 +1214,10 @@ body {
 }
 .itamae {
   position: absolute;
-  left: 4%;
-  bottom: 8px;
+  left: 3%;
+  bottom: 6px;
+  display: flex;
+  align-items: flex-end;
 }
 .itamae-body {
   position: relative;
@@ -1370,11 +1384,12 @@ body {
   align-items: center;
 }
 .plate-sushi {
-  margin-bottom: -14px;
+  margin-bottom: -26px;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.22));
 }
 .plate-yen {
   position: absolute;
-  bottom: 3px;
+  bottom: -3px;
   font-size: 9px;
   letter-spacing: 0;
 }
@@ -1596,4 +1611,54 @@ body {
   font-size: 46px;
   color: #c0d0dc;
   line-height: 1.4;
+}
+
+
+/* ---------- 生成がぞう を つかう ぶぶん ---------- */
+
+.sky.photo {
+  background-size: cover;
+  background-position: center bottom;
+}
+.char-img {
+  transition: transform 0.15s;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
+}
+.char-img.pull {
+  transform: rotate(-6deg) translateY(-4px);
+}
+
+/* さお: てのひら(94,96)から みぎうえ へ 40ど */
+.rod-img {
+  position: absolute;
+  left: 88px;
+  top: 88px;
+  transform: rotate(-40deg);
+  transform-origin: 6% 50%;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+}
+.angler.pulling .rod-img {
+  transform: rotate(-52deg);
+}
+
+.belt.photo {
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  animation: beltscroll 2.4s linear infinite;
+}
+@keyframes beltscroll {
+  to {
+    background-position-x: -240px;
+  }
+}
+.counter-top.photo {
+  background-size: cover;
+  background-position: center;
+}
+.itamae-img {
+  width: auto;
+  height: 108px;
+  max-height: 108px;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
 }

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { FISH } from './data'
+import { areaImage } from './assets'
 import { FishArt } from './art'
 
 // よこから みた うみ の け しき（さかなが およいでいる）
@@ -38,14 +39,20 @@ export default function Sea({ area, children }) {
     [area.id],
   )
 
+  const bg = areaImage(area.id)
+
   return (
     <div className="sea" style={{ '--sky1': area.sky[0], '--sky2': area.sky[1], '--w1': area.water[0], '--w2': area.water[1] }}>
-      <div className="sky">
-        <div className="sun" />
-        <div className="cloud c1" />
-        <div className="cloud c2" />
-        <div className="cloud c3" />
-        <Scenery area={area} />
+      <div className={`sky ${bg ? 'photo' : ''}`} style={bg ? { backgroundImage: `url(${bg})` } : undefined}>
+        {!bg && (
+          <>
+            <div className="sun" />
+            <div className="cloud c1" />
+            <div className="cloud c2" />
+            <div className="cloud c3" />
+            <Scenery area={area} />
+          </>
+        )}
       </div>
 
       <div className="water">

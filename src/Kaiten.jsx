@@ -2,14 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { fishById, RARITY_COLOR, RARITY_LABEL } from './data'
 import { CharArt, FishArt, PlateArt, SushiArt } from './art'
 import { sfx } from './sound'
+import { shopImage } from './assets'
 
 // おさらの いろ（レアど で かわる = かいてんずし の おさら）
 const PLATE_COLOR = ['#e8eef2', '#f2f5f7', '#7fc8e8', '#ffb84f', '#ffd85f']
 const PLATE_YEN = ['', '100', '200', '400', '?']
 
 const AMBIENT_POOL = ['aji', 'saba', 'iwashi', 'ika', 'ebi', 'kisu', 'maguro', 'kani']
-
-let seq = 1
 
 export default function Kaiten({ save, setSave, char, onBack }) {
   const [ambient, setAmbient] = useState([])
@@ -18,6 +17,8 @@ export default function Kaiten({ save, setSave, char, onBack }) {
   const [eating, setEating] = useState(null)
   const [talk, setTalk] = useState('いらっしゃい！ したの パネルで ちゅうもん してね')
   const timer = useRef(null)
+  const seqRef = useRef(1)
+  const nextId = () => seqRef.current++
 
   const sushiKinds = Object.keys(save.sushi).length
 
@@ -29,7 +30,7 @@ export default function Kaiten({ save, setSave, char, onBack }) {
       setAmbient((list) => {
         if (list.length > 5) return list
         const id = pool[Math.floor(Math.random() * pool.length)]
-        return [...list, { uid: seq++, fishId: id, dur: 13 + Math.random() * 4 }]
+        return [...list, { uid: nextId(), fishId: id, dur: 13 + Math.random() * 4 }]
       })
     }
     spawn()
@@ -50,7 +51,7 @@ export default function Kaiten({ save, setSave, char, onBack }) {
     }
     sfx.tap()
     setSave((s) => ({ ...s, bucket: s.bucket.filter((b) => b.uid !== item.uid) }))
-    setOrdered({ uid: seq++, item, fish })
+    setOrdered({ uid: nextId(), item, fish })
     setArrived(false)
     setTalk(`${fish.name} いっちょう！ レーンで はこぶよ〜`)
   }
@@ -114,15 +115,19 @@ export default function Kaiten({ save, setSave, char, onBack }) {
         </div>
 
         <div className="itamae">
-          <div className="itamae-body">
-            <div className="itamae-hat" />
-            <div className="itamae-face">
-              <span className="eye l" />
-              <span className="eye r" />
-              <span className="mouth" />
+          {shopImage('itamae') ? (
+            <img src={shopImage('itamae')} alt="いたまえさん" className="itamae-img" draggable="false" />
+          ) : (
+            <div className="itamae-body">
+              <div className="itamae-hat" />
+              <div className="itamae-face">
+                <span className="eye l" />
+                <span className="eye r" />
+                <span className="mouth" />
+              </div>
+              <div className="itamae-coat" />
             </div>
-            <div className="itamae-coat" />
-          </div>
+          )}
         </div>
 
         <div className="talk-bubble">{talk}</div>
@@ -132,7 +137,10 @@ export default function Kaiten({ save, setSave, char, onBack }) {
       <div className="lane-wrap">
         <div className="lane-rail top" />
         <div className="lane">
-          <div className="belt" />
+          <div
+            className={`belt ${shopImage('belt') ? 'photo' : ''}`}
+            style={shopImage('belt') ? { backgroundImage: `url(${shopImage('belt')})` } : undefined}
+          />
           <div className="pickup" />
 
           {ambient.map((a) => {
@@ -169,7 +177,10 @@ export default function Kaiten({ save, setSave, char, onBack }) {
       </div>
 
       {/* ---- カウンター ---- */}
-      <div className="counter-top">
+      <div
+        className={`counter-top ${shopImage('counter') ? 'photo' : ''}`}
+        style={shopImage('counter') ? { backgroundImage: `url(${shopImage('counter')})` } : undefined}
+      >
         <div className="counter-items">
           <div className="cup" title="おちゃ" />
           <div className="soy" />
@@ -240,7 +251,7 @@ function Plate({ fish, big }) {
       <div className="plate-sushi">
         <SushiArt fish={fish} size={big ? 74 : 62} />
       </div>
-      <PlateArt color={PLATE_COLOR[fish.rarity]} size={big ? 104 : 88} />
+      <PlateArt color={PLATE_COLOR[fish.rarity]} rarity={fish.rarity} size={big ? 104 : 88} />
       <span className="plate-yen" style={{ color: fish.rarity >= 3 ? '#a8621f' : '#5f7080' }}>
         {PLATE_YEN[fish.rarity]}えん
       </span>
