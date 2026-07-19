@@ -1,0 +1,27 @@
+#!/bin/bash
+# つりつりゲーム ランチャー
+DIR="$(cd "$(dirname "$0")/../Resources" && pwd)"
+PORT=5196
+URL="http://localhost:$PORT"
+
+# おなじ WiFi の なかの じぶんの アドレスを しらべる
+IFACE="$(route -n get default 2>/dev/null | awk '/interface:/{print $2}')"
+IP=""
+[ -n "$IFACE" ] && IP="$(ipconfig getifaddr "$IFACE" 2>/dev/null)"
+[ -z "$IP" ] && IP="$(ipconfig getifaddr en0 2>/dev/null)"
+[ -z "$IP" ] && IP="$(ipconfig getifaddr en1 2>/dev/null)"
+
+# ゲームがわに LAN の URL を おしえる
+if [ -n "$IP" ]; then
+  printf '{"url":"http://%s:%s"}' "$IP" "$PORT" > "$DIR/dist/lan.json"
+  osascript -e "display notification \"iPadなどからは http://$IP:$PORT\" with title \"つりつりゲーム\"" >/dev/null 2>&1 &
+else
+  rm -f "$DIR/dist/lan.json"
+fi
+
+if curl -s -o /dev/null "$URL" 2>/dev/null; then open "$URL"; exit 0; fi
+if lsof -ti:"$PORT" >/dev/null 2>&1; then open "$URL"; exit 0; fi
+( sleep 1; open "$URL" ) &
+cd "$DIR/dist" || exit 1
+# 0.0.0.0 で まちうけ = おなじ WiFi の きき から つながる
+exec /usr/bin/python3 -m http.server "$PORT" --bind 0.0.0.0
