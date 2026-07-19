@@ -1662,3 +1662,200 @@ body {
   display: block;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
 }
+
+/* ---------- さかな 1ぴきの ページ ---------- */
+
+.fish-page {
+  background: linear-gradient(180deg, #eaf6ff, #f7fbff);
+}
+.fp-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 14px 30px;
+}
+.fp-hero {
+  background: #fff;
+  border: 5px solid #d8e8f2;
+  border-radius: 24px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  box-shadow: 0 5px 0 #cfdde6;
+}
+.fp-name {
+  text-align: center;
+  font-size: 30px;
+  margin: 14px 0 0;
+  color: #17516f;
+}
+.fp-wa {
+  text-align: center;
+  margin: 2px 0 12px;
+  color: #7f95a8;
+  font-size: 15px;
+}
+.fp-rec {
+  display: flex;
+  gap: 8px;
+}
+.fp-rec > div {
+  flex: 1;
+  background: #fff;
+  border: 3px solid #ffe3b8;
+  border-radius: 16px;
+  padding: 8px 4px;
+  text-align: center;
+}
+.fp-rec span {
+  display: block;
+  font-size: 11px;
+  color: #9faab4;
+}
+.fp-rec b {
+  font-size: 18px;
+  color: #d9701f;
+}
+.fp-table {
+  margin-top: 12px;
+  background: #fff;
+  border-radius: 18px;
+  border: 3px solid #d8e8f2;
+  overflow: hidden;
+}
+.fp-table > div {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 2px solid #eef5f9;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.fp-table > div:last-child {
+  border-bottom: none;
+}
+.fp-table span {
+  flex: 0 0 74px;
+  color: #7f95a8;
+  font-size: 13px;
+  padding-top: 2px;
+}
+.fp-table b {
+  flex: 1;
+  font-weight: normal;
+  color: #2a3440;
+}
+.fp-h {
+  margin: 18px 0 8px;
+  font-size: 19px;
+  color: #17516f;
+}
+.fp-facts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fp-facts li {
+  background: #fffdf6;
+  border: 3px solid #ffe3b8;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.z-card:disabled {
+  cursor: default;
+}
+.z-card {
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--ink);
+}
+.z-card:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+/* ---------- おすし ずかん ---------- */
+
+.sushi-book {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: linear-gradient(180deg, #fff2f5, #fff9fa);
+  display: flex;
+  flex-direction: column;
+  animation: fade 0.18s;
+}
+.sb-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #ffffffdd;
+  border-bottom: 3px solid #ffd0dc;
+}
+.sb-bar b {
+  flex: 1;
+  text-align: center;
+  font-size: 19px;
+  color: #a0526e;
+}
+.sb-sub {
+  text-align: center;
+  margin: 8px;
+  color: #a0788a;
+  font-size: 15px;
+}
+.sb-sub b {
+  color: #d9407a;
+  font-size: 18px;
+}
+.sb-grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 10px;
+  padding: 4px 12px 24px;
+  align-content: start;
+}
+.sb-card {
+  background: #fff;
+  border: 4px solid #ffd0dc;
+  border-radius: 18px;
+  padding: 8px 4px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.sb-card.yet {
+  background: #f7f2f4;
+  border-color: #e8dde1;
+}
+.sb-card b {
+  font-size: 14px;
+}
+.sb-card small {
+  font-size: 11px;
+  color: #9faab4;
+}
+.sb-count {
+  margin-top: 3px;
+  background: #ffe3ea;
+  color: #c94f78;
+  border-radius: 10px;
+  font-size: 11px;
+  padding: 2px 8px;
+}
+.sb-q {
+  font-size: 44px;
+  filter: grayscale(1);
+  opacity: 0.45;
+  line-height: 1.5;
+}

@@ -3,7 +3,8 @@ import { AREAS, BAITS, CHARACTERS, FISH, RARITY_COLOR, RARITY_LABEL, RODS, fishB
 import { CharArt, FishArt, RodArt } from './art'
 import Sea from './Sea'
 import Kaiten from './Kaiten'
-import { rodImage, shopImage } from './assets'
+import { rodImage } from './assets'
+import { fishInfo } from './fishInfo'
 import { sfx, setSound } from './sound'
 
 const SAVE_KEY = 'tsuri-tsuri-save-v1'
@@ -773,6 +774,14 @@ function Shop({ save, setSave, onBack }) {
 /* ---------------- ずかん ---------------- */
 
 function Zukan({ save, onBack }) {
+  const [sel, setSel] = useState(null)
+  const got = (f) => save.zukan[f.id]
+
+  if (sel) {
+    const f = FISH.find((x) => x.id === sel)
+    return <FishPage fish={f} rec={save.zukan[sel]} onBack={() => setSel(null)} />
+  }
+
   return (
     <div className="screen zukan-screen">
       <div className="topbar">
@@ -784,18 +793,28 @@ function Zukan({ save, onBack }) {
           {Object.keys(save.zukan).length}/{FISH.length}
         </div>
       </div>
+      <p className="sub-line">つった さかなを タップすると くわしく みられるよ</p>
       <div className="zukan-grid">
         {FISH.map((f) => {
-          const got = save.zukan[f.id]
+          const g = got(f)
           return (
-            <div key={f.id} className={`z-card ${got ? '' : 'unknown'}`} style={got ? { borderColor: RARITY_COLOR[f.rarity] } : undefined}>
-              {got ? (
+            <button
+              key={f.id}
+              className={`z-card ${g ? '' : 'unknown'}`}
+              style={g ? { borderColor: RARITY_COLOR[f.rarity] } : undefined}
+              disabled={!g}
+              onClick={() => {
+                sfx.tap()
+                setSel(f.id)
+              }}
+            >
+              {g ? (
                 <>
                   <FishArt fish={f} size={78} />
                   <b>{f.name}</b>
                   <small style={{ color: RARITY_COLOR[f.rarity] }}>{RARITY_LABEL[f.rarity]}</small>
-                  <small>さいだい {got.best}cm</small>
-                  <small>×{got.count}</small>
+                  <small>さいだい {g.best}cm</small>
+                  <small>×{g.count}</small>
                 </>
               ) : (
                 <>
@@ -803,9 +822,89 @@ function Zukan({ save, onBack }) {
                   <b>？？？</b>
                 </>
               )}
-            </div>
+            </button>
           )
         })}
+      </div>
+    </div>
+  )
+}
+
+/* ---------------- さかな 1ぴき の ページ ---------------- */
+
+function FishPage({ fish, rec, onBack }) {
+  const info = fishInfo(fish.id)
+  const idx = FISH.findIndex((f) => f.id === fish.id)
+  return (
+    <div className="screen fish-page">
+      <div className="topbar">
+        <button className="mini-btn" onClick={onBack}>
+          ← ずかん
+        </button>
+        <h2 className="head sm">No.{String(idx + 1).padStart(2, '0')}</h2>
+        <div className="coins" style={{ color: RARITY_COLOR[fish.rarity] }}>
+          {RARITY_LABEL[fish.rarity]}
+        </div>
+      </div>
+
+      <div className="fp-scroll">
+        <div className="fp-hero" style={{ borderColor: RARITY_COLOR[fish.rarity] }}>
+          <FishArt fish={fish} size={280} />
+        </div>
+
+        <h3 className="fp-name">{fish.name}</h3>
+        {info && <p className="fp-wa">{info.wa}</p>}
+
+        <div className="fp-rec">
+          <div>
+            <span>つった かず</span>
+            <b>{rec?.count ?? 0}ひき</b>
+          </div>
+          <div>
+            <span>さいだい</span>
+            <b>{rec?.best ?? '-'}cm</b>
+          </div>
+          <div>
+            <span>ねだん</span>
+            <b>🪙{fish.price}</b>
+          </div>
+        </div>
+
+        {info ? (
+          <>
+            <div className="fp-table">
+              <div>
+                <span>なかま</span>
+                <b>{info.group}</b>
+              </div>
+              <div>
+                <span>おおきさ</span>
+                <b>{info.size}</b>
+              </div>
+              <div>
+                <span>すみか</span>
+                <b>{info.where}</b>
+              </div>
+              <div>
+                <span>たべもの</span>
+                <b>{info.food}</b>
+              </div>
+              <div>
+                <span>しゅん</span>
+                <b>{info.season}</b>
+              </div>
+            </div>
+
+            <h4 className="fp-h">💡 しっていると すごい！</h4>
+            <ul className="fp-facts">
+              {info.facts.map((t, i) => (
+                <li key={i}>{t}</li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="empty">じょうほうを しらべちゅう…</p>
+        )}
       </div>
     </div>
   )

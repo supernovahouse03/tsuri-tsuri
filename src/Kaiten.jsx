@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { fishById, RARITY_COLOR, RARITY_LABEL } from './data'
+import { FISH, fishById, RARITY_COLOR, RARITY_LABEL } from './data'
 import { CharArt, FishArt, PlateArt, SushiArt } from './art'
 import { sfx } from './sound'
 import { shopImage } from './assets'
@@ -16,6 +16,7 @@ export default function Kaiten({ save, setSave, char, onBack }) {
   const [arrived, setArrived] = useState(false)
   const [eating, setEating] = useState(null)
   const [talk, setTalk] = useState('いらっしゃい！ したの パネルで ちゅうもん してね')
+  const [book, setBook] = useState(false)
   const timer = useRef(null)
   const seqRef = useRef(1)
   const nextId = () => seqRef.current++
@@ -84,7 +85,18 @@ export default function Kaiten({ save, setSave, char, onBack }) {
         <h2 className="head sm">🍣 かいてんずし</h2>
         <div className="coins">😄 {save.smiles}</div>
         <div className="coins">🪙 {save.coins}</div>
+        <button
+          className="mini-btn"
+          onClick={() => {
+            sfx.tap()
+            setBook(true)
+          }}
+        >
+          🍣 ずかん
+        </button>
       </div>
+
+      {book && <SushiBook save={save} onBack={() => setBook(false)} />}
 
       {/* ---- おみせの なか ---- */}
       <div className="shop-scene">
@@ -255,6 +267,56 @@ function Plate({ fish, big }) {
       <span className="plate-yen" style={{ color: fish.rarity >= 3 ? '#a8621f' : '#5f7080' }}>
         {PLATE_YEN[fish.rarity]}えん
       </span>
+    </div>
+  )
+}
+
+/* ---------------- おすし ずかん ---------------- */
+
+function SushiBook({ save, onBack }) {
+  const list = FISH.filter((f) => !f.junk)
+  const eaten = list.filter((f) => save.sushi[f.id]).length
+  const total = Object.values(save.sushi).reduce((a, b) => a + b, 0)
+
+  return (
+    <div className="sushi-book">
+      <div className="sb-bar">
+        <button className="mini-btn" onClick={onBack}>
+          ← おみせに もどる
+        </button>
+        <b>🍣 おすし ずかん</b>
+        <span className="coins">
+          {eaten}/{list.length}
+        </span>
+      </div>
+
+      <p className="sb-sub">
+        たべた おすし ぜんぶで <b>{total}かん</b>
+      </p>
+
+      <div className="sb-grid">
+        {list.map((f) => {
+          const n = save.sushi[f.id]
+          return (
+            <div key={f.id} className={`sb-card ${n ? '' : 'yet'}`} style={n ? { borderColor: RARITY_COLOR[f.rarity] } : undefined}>
+              {n ? (
+                <>
+                  <SushiArt fish={f} size={96} />
+                  <b>{f.name}</b>
+                  <small style={{ color: RARITY_COLOR[f.rarity] }}>{RARITY_LABEL[f.rarity]}</small>
+                  <span className="sb-count">{n}かん たべた</span>
+                </>
+              ) : (
+                <>
+                  <div className="sb-q">🍥</div>
+                  <b>？？？</b>
+                  <small>まだ たべてない</small>
+                </>
+              )}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
