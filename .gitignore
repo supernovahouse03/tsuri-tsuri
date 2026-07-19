@@ -2,3 +2,6 @@ node_modules
 dist
 .DS_Store
 つりつりゲーム.app/
+.env
+.env.local
+.gen/

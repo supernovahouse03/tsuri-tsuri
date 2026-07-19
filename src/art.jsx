@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { fishImage } from './fishImages'
 
 /* いろの あかるさを かえる */
 function shade(hex, amt) {
@@ -25,6 +26,25 @@ function Eye({ x, y, r = 4.6 }) {
 
 export function FishArt({ fish, size = 80, flip = false }) {
   const raw = useId()
+  // 生成AI の えが あれば そっちを つかう（なければ したの SVG）
+  const img = fishImage(fish.id)
+  if (img) {
+    return (
+      <img
+        src={img}
+        alt={fish.name}
+        width={size}
+        height={(size * 400) / 520}
+        draggable="false"
+        style={{
+          display: 'block',
+          objectFit: 'contain',
+          transform: flip ? 'scaleX(-1)' : 'none',
+          pointerEvents: 'none',
+        }}
+      />
+    )
+  }
   const uid = raw.replace(/:/g, '')
   const c = fish.color
   const d = fish.color2
