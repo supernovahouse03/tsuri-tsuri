@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { AREAS, BAITS, CHARACTERS, FISH, RARITY_COLOR, RARITY_LABEL, RODS, fishById } from './data'
-import { CharArt, FishArt, SushiArt } from './art'
+import { CharArt, FishArt } from './art'
 import Sea from './Sea'
+import Kaiten from './Kaiten'
 import { sfx, setSound } from './sound'
 
 const SAVE_KEY = 'tsuri-tsuri-save-v1'
@@ -96,7 +97,7 @@ export default function App() {
       )}
       {screen === 'fishing' && <Fishing save={save} setSave={setSave} char={char} area={area} onBack={() => setScreen('map')} />}
       {screen === 'shop' && <Shop save={save} setSave={setSave} onBack={() => setScreen('map')} />}
-      {screen === 'sushi' && <Sushi save={save} setSave={setSave} char={char} onBack={() => setScreen('map')} />}
+      {screen === 'sushi' && <Kaiten save={save} setSave={setSave} char={char} onBack={() => setScreen('map')} />}
       {screen === 'zukan' && <Zukan save={save} onBack={() => setScreen('map')} />}
     </div>
   )
@@ -538,8 +539,7 @@ function Fishing({ save, setSave, char, area, onBack }) {
           </div>
 
           <div className="angler">
-            <CharArt char={char} size={130} pose={phase === PHASE.REEL ? 'pull' : 'idle'} />
-            <div className="rod" />
+            <CharArt char={char} size={130} pose={phase === PHASE.REEL ? 'pull' : 'idle'} rod />
           </div>
 
           <svg className="line-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
@@ -763,103 +763,6 @@ function Shop({ save, setSave, onBack }) {
           </>
         )}
       </div>
-    </div>
-  )
-}
-
-/* ---------------- おすしやさん ---------------- */
-
-function Sushi({ save, setSave, char, onBack }) {
-  const [eating, setEating] = useState(null)
-
-  const makeSushi = (it) => {
-    const f = fishById(it.fishId)
-    if (f.junk) {
-      sfx.miss()
-      setEating({ fish: f, bad: true })
-      setTimeout(() => setEating(null), 1800)
-      return
-    }
-    sfx.eat()
-    const smile = 1 + f.rarity + Math.round(it.size / 40)
-    const coins = Math.round(f.price * 0.35)
-    setSave((s) => ({
-      ...s,
-      bucket: s.bucket.filter((b) => b.uid !== it.uid),
-      sushi: { ...s.sushi, [f.id]: (s.sushi[f.id] || 0) + 1 },
-      smiles: s.smiles + smile,
-      coins: s.coins + coins,
-    }))
-    setEating({ fish: f, smile, coins })
-    setTimeout(() => setEating(null), 2000)
-  }
-
-  const sushiKinds = Object.keys(save.sushi).length
-
-  return (
-    <div className="screen sushi-screen">
-      <div className="topbar">
-        <button className="mini-btn" onClick={onBack}>
-          ← マップ
-        </button>
-        <h2 className="head sm">🍣 おすしやさん</h2>
-        <div className="coins">😄 {save.smiles}</div>
-      </div>
-
-      <div className="counter">
-        <div className="master">
-          <div className="master-face">🧑‍🍳</div>
-          <div className="bubble-talk">
-            {save.bucket.length ? 'いらっしゃい！ どの さかなを にぎる？' : 'さかなを つってきたら にぎるよ！'}
-          </div>
-        </div>
-        <div className="neta-row">
-          {Object.keys(save.sushi).slice(0, 8).map((id) => (
-            <SushiArt key={id} fish={fishById(id)} size={56} />
-          ))}
-        </div>
-      </div>
-
-      <p className="sub-line">おすし ずかん: {sushiKinds} しゅるい</p>
-
-      {save.bucket.length === 0 && <p className="empty">クーラーボックスが からっぽ！ つりに いこう 🎣</p>}
-
-      <div className="bucket-grid">
-        {save.bucket.map((it) => {
-          const f = fishById(it.fishId)
-          return (
-            <button key={it.uid} className="bucket-card tap" onClick={() => makeSushi(it)}>
-              <FishArt fish={f} size={64} />
-              <b>{f.name}</b>
-              <small>{it.size}cm</small>
-              <span className="make">にぎる！</span>
-            </button>
-          )
-        })}
-      </div>
-
-      {eating && (
-        <div className="modal-wrap">
-          <div className="modal eat">
-            {eating.bad ? (
-              <>
-                <div style={{ fontSize: 70 }}>😵</div>
-                <h3>それは おすしに できないよ〜！</h3>
-              </>
-            ) : (
-              <>
-                <SushiArt fish={eating.fish} size={190} />
-                <h3>{eating.fish.name}の おすし！</h3>
-                <p className="eat-line">
-                  <CharArt char={char} size={80} />
-                  <span>おいしーい！！ 😋</span>
-                </p>
-                <p className="gain">😄 +{eating.smile} ／ 🪙 +{eating.coins}</p>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

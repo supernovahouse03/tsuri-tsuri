@@ -46,17 +46,17 @@ export const CHARACTERS = [
 // レア度: 1 ふつう / 2 めずらしい / 3 レア / 4 でんせつ
 export const FISH = [
   // みなと
-  { id: 'aji', name: 'アジ', area: 'minato', rarity: 1, price: 30, min: 12, max: 28, color: '#9fd8e8', color2: '#4a90b8', shape: 'normal' },
-  { id: 'iwashi', name: 'イワシ', area: 'minato', rarity: 1, price: 20, min: 8, max: 18, color: '#cfe9f5', color2: '#6aa8cf', shape: 'slim' },
-  { id: 'saba', name: 'サバ', area: 'minato', rarity: 1, price: 45, min: 20, max: 42, color: '#8fd0c0', color2: '#3c7f7a', shape: 'normal' },
-  { id: 'fugu', name: 'フグ', area: 'minato', rarity: 2, price: 120, min: 10, max: 26, color: '#ffe08a', color2: '#e0a83c', shape: 'round' },
+  { id: 'aji', pattern: 'scales', name: 'アジ', area: 'minato', rarity: 1, price: 30, min: 12, max: 28, color: '#9fd8e8', color2: '#4a90b8', shape: 'normal' },
+  { id: 'iwashi', pattern: 'scales', name: 'イワシ', area: 'minato', rarity: 1, price: 20, min: 8, max: 18, color: '#cfe9f5', color2: '#6aa8cf', shape: 'slim' },
+  { id: 'saba', pattern: 'stripes', name: 'サバ', area: 'minato', rarity: 1, price: 45, min: 20, max: 42, color: '#8fd0c0', color2: '#3c7f7a', shape: 'normal' },
+  { id: 'fugu', pattern: 'spots', name: 'フグ', area: 'minato', rarity: 2, price: 120, min: 10, max: 26, color: '#ffe08a', color2: '#e0a83c', shape: 'round' },
   { id: 'takobo', name: 'コダコ', area: 'minato', rarity: 2, price: 140, min: 12, max: 30, color: '#ff9fb0', color2: '#d95f7c', shape: 'octo' },
-  { id: 'kingyo', name: 'ミナトキング', area: 'minato', rarity: 3, price: 420, min: 30, max: 55, color: '#ffd166', color2: '#e07a1f', shape: 'round' },
+  { id: 'kingyo', pattern: 'scales', name: 'ミナトキング', area: 'minato', rarity: 3, price: 420, min: 30, max: 55, color: '#ffd166', color2: '#e07a1f', shape: 'round' },
 
   // ていぼう
-  { id: 'kisu', name: 'キス', area: 'teibou', rarity: 1, price: 40, min: 12, max: 26, color: '#fff0d6', color2: '#d9b98a', shape: 'slim' },
-  { id: 'kurodai', name: 'クロダイ', area: 'teibou', rarity: 2, price: 160, min: 25, max: 50, color: '#9aa3b5', color2: '#4a5468', shape: 'normal' },
-  { id: 'suzuki', name: 'スズキ', area: 'teibou', rarity: 2, price: 200, min: 35, max: 70, color: '#d8e6f0', color2: '#7f95a8', shape: 'long' },
+  { id: 'kisu', pattern: 'scales', name: 'キス', area: 'teibou', rarity: 1, price: 40, min: 12, max: 26, color: '#fff0d6', color2: '#d9b98a', shape: 'slim' },
+  { id: 'kurodai', pattern: 'bands', name: 'クロダイ', area: 'teibou', rarity: 2, price: 160, min: 25, max: 50, color: '#9aa3b5', color2: '#4a5468', shape: 'normal' },
+  { id: 'suzuki', pattern: 'scales', name: 'スズキ', area: 'teibou', rarity: 2, price: 200, min: 35, max: 70, color: '#d8e6f0', color2: '#7f95a8', shape: 'long' },
   { id: 'tachiuo', name: 'タチウオ', area: 'teibou', rarity: 3, price: 320, min: 60, max: 110, color: '#e8f0f5', color2: '#a8b8c4', shape: 'long' },
   { id: 'ika', name: 'イカ', area: 'teibou', rarity: 2, price: 150, min: 15, max: 35, color: '#ffe3ef', color2: '#e08fb0', shape: 'squid' },
   { id: 'ebi', name: 'クルマエビ', area: 'teibou', rarity: 2, price: 180, min: 8, max: 20, color: '#ffc3a0', color2: '#e0653c', shape: 'shrimp' },
@@ -70,18 +70,18 @@ export const FISH = [
   { id: 'ryugu', name: 'リュウグウヒメ', area: 'irie', rarity: 4, price: 1200, min: 40, max: 80, color: '#b9f0ff', color2: '#3fa8d8', shape: 'fancy' },
 
   // いわば
-  { id: 'kasago', name: 'カサゴ', area: 'iwaba', rarity: 1, price: 70, min: 12, max: 30, color: '#e0785c', color2: '#8f3320', shape: 'normal' },
+  { id: 'kasago', pattern: 'spots', name: 'カサゴ', area: 'iwaba', rarity: 1, price: 70, min: 12, max: 30, color: '#e0785c', color2: '#8f3320', shape: 'normal' },
   { id: 'ise', name: 'イセエビ', area: 'iwaba', rarity: 3, price: 520, min: 20, max: 45, color: '#e05c4a', color2: '#8f2418', shape: 'shrimp' },
   { id: 'tako', name: 'オオダコ', area: 'iwaba', rarity: 3, price: 460, min: 40, max: 95, color: '#ff7f9c', color2: '#b03050', shape: 'octo' },
-  { id: 'ainame', name: 'アイナメ', area: 'iwaba', rarity: 2, price: 170, min: 20, max: 45, color: '#c8d88f', color2: '#6f8038', shape: 'normal' },
+  { id: 'ainame', pattern: 'spots', name: 'アイナメ', area: 'iwaba', rarity: 2, price: 170, min: 20, max: 45, color: '#c8d88f', color2: '#6f8038', shape: 'normal' },
   { id: 'utsubo', name: 'ウツボ', area: 'iwaba', rarity: 3, price: 400, min: 50, max: 120, color: '#a8c060', color2: '#4f6020', shape: 'long' },
   { id: 'iwaou', name: 'イワバノヌシ', area: 'iwaba', rarity: 4, price: 1500, min: 60, max: 120, color: '#c0a8ff', color2: '#5a3fa8', shape: 'fancy' },
 
   // おきのとうだい
-  { id: 'katsuo', name: 'カツオ', area: 'toudai', rarity: 2, price: 300, min: 40, max: 80, color: '#8fb8d8', color2: '#3a5f80', shape: 'normal' },
-  { id: 'maguro', name: 'マグロ', area: 'toudai', rarity: 3, price: 900, min: 80, max: 180, color: '#6fa8d0', color2: '#25496b', shape: 'big' },
-  { id: 'buri', name: 'ブリ', area: 'toudai', rarity: 3, price: 700, min: 60, max: 120, color: '#bfe0d0', color2: '#4f7f6b', shape: 'big' },
-  { id: 'manbo', name: 'マンボウ', area: 'toudai', rarity: 3, price: 800, min: 90, max: 200, color: '#cfd8e0', color2: '#7f8f9f', shape: 'round' },
+  { id: 'katsuo', pattern: 'stripes', name: 'カツオ', area: 'toudai', rarity: 2, price: 300, min: 40, max: 80, color: '#8fb8d8', color2: '#3a5f80', shape: 'normal' },
+  { id: 'maguro', pattern: 'scales', name: 'マグロ', area: 'toudai', rarity: 3, price: 900, min: 80, max: 180, color: '#6fa8d0', color2: '#25496b', shape: 'big' },
+  { id: 'buri', pattern: 'stripes', name: 'ブリ', area: 'toudai', rarity: 3, price: 700, min: 60, max: 120, color: '#bfe0d0', color2: '#4f7f6b', shape: 'big' },
+  { id: 'manbo', pattern: 'scales', name: 'マンボウ', area: 'toudai', rarity: 3, price: 800, min: 90, max: 200, color: '#cfd8e0', color2: '#7f8f9f', shape: 'round' },
   { id: 'same', name: 'コザメ', area: 'toudai', rarity: 3, price: 850, min: 70, max: 150, color: '#a8b8c8', color2: '#4f5f70', shape: 'shark' },
   { id: 'ryu', name: 'ウミノドラゴン', area: 'toudai', rarity: 4, price: 2500, min: 100, max: 250, color: '#8fffd0', color2: '#1f8f7f', shape: 'dragon' },
 
